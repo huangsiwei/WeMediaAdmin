@@ -51,7 +51,7 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                        <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> 平台管理</a></li>
                         <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
                     </ul>
                 </li>
@@ -239,7 +239,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="savePlatformConfig()">保存</button>
+                <button type="button" class="btn btn-primary" id="saveConfigBtn" platform-id="-1"
+                        onclick="savePlatformConfig(-1)
+">保存
+                </button>
             </div>
         </div>
     </div>
@@ -248,11 +251,18 @@
 <script src="<@spring.url'/js/jquery-2.2.0.min.js'/>"></script>
 <script src="<@spring.url'/js/bootstrap.js'/>"></script>
 <script type="application/javascript">
+    $(function () {
+        loadPlatformConfigList();
+    });
+
     function showPlatformConfigModal(platformId) {
         if (platformId) {
-
+            $('#platformConfig').modal("show");
+            $('#platformConfig #saveConfigBtn').attr("platform-id", platformId);
+            $('#platformConfig .modal-title').html("修改平台")
         } else {
             $('#platformConfig').modal("show");
+            $('#platformConfig #saveConfigBtn').attr("platform-id", -1);
             $('#platformConfig .modal-title').html("新增平台")
         }
     }
@@ -272,11 +282,12 @@
         })
     }
 
-    function savePlatformConfig(platformId) {
+    function savePlatformConfig() {
+        var platformId = $('#platformConfig #saveConfigBtn').attr("config-id");
         $.ajax({
             type: 'POST',
             data: {
-                "platformId": -1,
+                "platformId": platformId,
                 "platformName": $("#platformName").val(),
                 "platformDesc": $("#platformDesc").val(),
                 "platformDomain": $("#platformDomain").val()
@@ -290,6 +301,7 @@
                     console.log("exception in save");
                 }
                 $('#platformConfig').modal("hide");
+                loadPlatformConfigList();
             },
             error: function (error) {
                 console.log(error);
