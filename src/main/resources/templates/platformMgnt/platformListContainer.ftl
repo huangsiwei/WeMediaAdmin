@@ -4,7 +4,7 @@
         <td>${item.platformDesc}</td>
         <td>${item.domain}</td>
         <td>
-            <button class="btn btn-primary btn-sm" onclick="showPlatformConfigModal(${item.id})">
+            <button class="btn btn-primary btn-sm" onclick="showPlatformConfigModal(${item.id?c})">
                 修改
             </button>
             <button class="btn btn-danger btn-sm">

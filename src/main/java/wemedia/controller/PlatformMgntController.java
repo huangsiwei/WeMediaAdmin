@@ -60,12 +60,27 @@ public class PlatformMgntController {
         return new ModelAndView("platformMgnt/platformListContainer", model);
     }
 
+    @RequestMapping("/platformMgnt/loadPlatformConfig")
+    public @ResponseBody
+    String loadPlatformConfig(@RequestParam("platformId") long platformId) {
+        Map<String, Object> resultData = new HashMap<>();
+        try {
+            Platform platform = platformRepository.findByIdAndDeleted(platformId, false);
+            resultData.put("status_Code", 200);
+            resultData.put("platform", platform);
+        } catch (Exception e) {
+            resultData.put("status_Code", 500);
+            resultData.put("exception", e);
+        }
+        return JSON.toJSONString(resultData);
+    }
+
     @RequestMapping("/platformMgnt/savePlatformConfig")
     public @ResponseBody
     String savePlatformConfig(@RequestParam("platformId") long platformId, @RequestParam
             ("platformName")
             String platformName, @RequestParam("platformDesc") String platformDesc, @RequestParam("platformDomain") String domain) {
-        Map<String, Object> signatureData = new HashMap<>();
+        Map<String, Object> resultData = new HashMap<>();
         try {
             Platform platform = null;
             if (platformId == -1) {
@@ -77,13 +92,13 @@ public class PlatformMgntController {
             platform.setPlatformDesc(platformDesc);
             platform.setDomain(domain);
             platformRepository.save(platform);
-            signatureData.put("status_Code", 200);
-            signatureData.put("platform", platform);
+            resultData.put("status_Code", 200);
+            resultData.put("platform", platform);
         } catch (Exception e) {
-            signatureData.put("status_Code", 500);
-            signatureData.put("exception", e);
+            resultData.put("status_Code", 500);
+            resultData.put("exception", e);
         }
-        return JSON.toJSONString(signatureData);
+        return JSON.toJSONString(resultData);
 
     }
 }

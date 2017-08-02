@@ -155,47 +155,7 @@
                                             </thead>
                                             <tbody>
 
-
-                                            <#--<tr role="row" class="odd">-->
-                                                <#--<td class="">Other browsers</td>-->
-                                                <#--<td class="sorting_1">All others</td>-->
-                                                <#--<td class="">-</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-                                            <#--</tr>-->
-                                            <#--<tr role="row" class="even">-->
-                                                <#--<td class="">Trident</td>-->
-                                                <#--<td class="sorting_1">AOL browser (AOL desktop)</td>-->
-                                                <#--<td class="">Win XP</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-
-                                            <#--</tr>-->
-                                            <#--<tr role="row" class="odd">-->
-                                                <#--<td class="">Gecko</td>-->
-                                                <#--<td class="sorting_1">Camino 1.0</td>-->
-                                                <#--<td class="">OSX.2+</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-
-                                            <#--</tr>-->
-                                            <#--<tr role="row" class="even">-->
-                                                <#--<td class="">Gecko</td>-->
-                                                <#--<td class="sorting_1">Camino 1.5</td>-->
-                                                <#--<td class="">OSX.3+</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-                                            <#--</tr>-->
-                                            <#--<tr role="row" class="odd">-->
-                                                <#--<td class="">Misc</td>-->
-                                                <#--<td class="sorting_1">Dillo 0.8</td>-->
-                                                <#--<td class="">Embedded devices</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-                                            <#--</tr>-->
-                                            <#--<tr role="row" class="even">-->
-                                                <#--<td class="">Gecko</td>-->
-                                                <#--<td class="sorting_1">Epiphany 2.20</td>-->
-                                                <#--<td class="">Gnome</td>-->
-                                                <#--<td class="">修改/删除</td>-->
-                                            <#--</tr>-->
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
@@ -259,12 +219,31 @@
         if (platformId) {
             $('#platformConfig').modal("show");
             $('#platformConfig #saveConfigBtn').attr("platform-id", platformId);
-            $('#platformConfig .modal-title').html("修改平台")
+            $('#platformConfig .modal-title').html("修改平台");
+            loadPlatformConfig();
         } else {
             $('#platformConfig').modal("show");
             $('#platformConfig #saveConfigBtn').attr("platform-id", -1);
             $('#platformConfig .modal-title').html("新增平台")
         }
+    }
+
+    function loadPlatformConfig() {
+        var platformId = $('#platformConfig #saveConfigBtn').attr("platform-id");
+        $.ajax({
+            type: "POST",
+            data: {platformId: platformId},
+            url: "/platformMgnt/loadPlatformConfig",
+            dataType: "json",
+            success: function (json) {
+                $("#platformName").val(json["platform"]["platformName"]);
+                $("#platformDesc").val(json["platform"]["platformDesc"]);
+                $("#platformDomain").val(json["platform"]["domain"]);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
     }
 
     function loadPlatformConfigList() {
@@ -283,7 +262,7 @@
     }
 
     function savePlatformConfig() {
-        var platformId = $('#platformConfig #saveConfigBtn').attr("config-id");
+        var platformId = $('#platformConfig #saveConfigBtn').attr("platform-id");
         $.ajax({
             type: 'POST',
             data: {

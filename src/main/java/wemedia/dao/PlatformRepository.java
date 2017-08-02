@@ -12,6 +12,8 @@ public interface PlatformRepository extends JpaRepository<Platform, Long> {
 
     Platform findById(long platformId);
 
+    Platform findByIdAndDeleted(long platformId, boolean deleted);
+
     List<Platform> findAllByDeleted(boolean deleted);
 
     List<Platform> findAllByPlatformNameIgnoreCaseContaining(String keyWords);
