@@ -39,18 +39,6 @@ public class PlatformMgntController {
         return "/platformMgnt/index";
     }
 
-    public String addPlatform() {
-        return "";
-    }
-
-    public String deletePlatform() {
-        return "";
-    }
-
-    public String updatePlatform() {
-        return "";
-    }
-
     @RequestMapping("/platformMgnt/loadPlatformConfigList")
     public ModelAndView loadPlatformConfigList() {
         Pageable limit = new PageRequest(0, 3000);
