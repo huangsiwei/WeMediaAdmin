@@ -42,7 +42,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                平台管理
+                自媒体人主页 管理
             </h1>
 
         </section>
@@ -53,9 +53,9 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">平台列表</h3>
+                            <h3 class="box-title">自媒体人列表</h3>
                             <button type="button" style="width: 60px;float: right"
-                                    class="btn btn-block btn-success btn-xs" onclick="showPlatformConfigModal()">新增
+                                    class="btn btn-block btn-success btn-xs" onclick="showWemediaHomePageConfig()">新增
                             </button>
                         </div>
                         <!-- /.box-header -->
@@ -67,24 +67,19 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="platformListTable" class="table table-bordered table-hover"
+                                        <table id="weMediaWorkerTable" class="table table-bordered table-hover"
                                                role="grid" aria-describedby="example2_info">
                                             <thead>
                                             <tr role="row">
                                                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Rendering engine: activate to sort column ascending">
-                                                    平台名称
+                                                    自媒体人
                                                 </th>
                                                 <th class="sorting_asc" tabindex="0" aria-controls="example2"
                                                     rowspan="1" colspan="1"
                                                     aria-label="Browser: activate to sort column descending"
-                                                    aria-sort="ascending">平台介绍
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Platform(s): activate to sort column ascending">
-                                                    域名
+                                                    aria-sort="ascending">简介
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                     colspan="1"
@@ -108,7 +103,8 @@
         </section>
     </div>
 </div>
-<div class="modal" id="platformConfig">
+
+<div class="modal" id="wemediaHomePageConfig">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -121,16 +117,16 @@
                     <form role="form">
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="platformName">平台名称</label>
-                                <input type="text" class="form-control" id="platformName" placeholder="请输入平台名称">
+                                <label for="workerId">请选择自媒体人</label>
+                                <select name="workerId" id="workerId" class="form-control">
+                                    
+                                </select>
                             </div>
+
                             <div class="form-group">
-                                <label for="platformDesc">平台描述</label>
-                                <input type="text" class="form-control" id="platformDesc" placeholder="请输入平台描述">
-                            </div>
-                            <div class="form-group">
-                                <label for="platformDomain">域名</label>
-                                <input type="text" class="form-control" id="platformDomain" placeholder="请输入描述">
+                                <label for="homePageUrlList">请输入主页网址</label>
+                                <textarea class="form-control" id="homePageUrlList" rows="7" cols="20"
+                                          placeholder="请输入主页网址，多个主页请用回车分隔"></textarea>
                             </div>
                         </div>
                     </form>
@@ -140,8 +136,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveConfigBtn" platform-id="-1"
-                        onclick="savePlatformConfig()
-">保存
+                        onclick="">保存
                 </button>
             </div>
         </div>
@@ -151,78 +146,37 @@
 <script src="<@spring.url'/js/jquery-2.2.0.min.js'/>"></script>
 <script src="<@spring.url'/js/bootstrap.js'/>"></script>
 <script type="application/javascript">
-    $(function () {
-        loadPlatformConfigList();
-    });
-
-    function showPlatformConfigModal(platformId) {
-        if (platformId) {
-            $('#platformConfig').modal("show");
-            $('#platformConfig #saveConfigBtn').attr("platform-id", platformId);
-            $('#platformConfig .modal-title').html("修改平台");
-            loadPlatformConfig();
-        } else {
-            $('#platformConfig').modal("show");
-            $('#platformConfig #saveConfigBtn').attr("platform-id", -1);
-            $('#platformConfig .modal-title').html("新增平台")
-        }
+    function showWemediaHomePageConfig() {
+        $("#wemediaHomePageConfig").modal("show");
+        loadWorkerIdSelectOption();
     }
-
-    function loadPlatformConfig() {
-        var platformId = $('#platformConfig #saveConfigBtn').attr("platform-id");
+    
+    function loadWorkerIdSelectOption() {
         $.ajax({
-            type: "POST",
-            data: {platformId: platformId},
-            url: "/platformMgnt/loadPlatformConfig",
-            dataType: "json",
-            success: function (json) {
-                $("#platformName").val(json["platform"]["platformName"]);
-                $("#platformDesc").val(json["platform"]["platformDesc"]);
-                $("#platformDomain").val(json["platform"]["domain"]);
+            url:"/weMediaHomePageMgnt/loadWorkerIdSelectOption",
+            data:{},
+            dataType:"html",
+            success:function (html) {
+                $("select[name=workerId]").html(html);
             },
-            error: function (error) {
-                console.log(error)
+            error:function (error) {
+                console.log(error);
             }
         })
     }
-
-    function loadPlatformConfigList() {
+    
+    function saveWemediaWorkerHomePageConfig() {
         $.ajax({
-            type: "POST",
-            data: {},
-            dataType: "html",
-            url: "/platformMgnt/loadPlatformConfigList",
-            success: function (html) {
-                $("#platformListTable tbody").html(html);
+            url:"/weMediaHomePageMgnt/saveWemediaWorkerHomePageConfig",
+            data:{
+                workerId:$("select[name=workerId]").val(),
+                homePageUrlList:$("#homePageUrlList").val()
             },
-            error: function (error) {
-                console.log(error)
-            }
-        })
-    }
+            dataType:"json",
+            success:function (json) {
 
-    function savePlatformConfig() {
-        var platformId = $('#platformConfig #saveConfigBtn').attr("platform-id");
-        $.ajax({
-            type: 'POST',
-            data: {
-                "platformId": platformId,
-                "platformName": $("#platformName").val(),
-                "platformDesc": $("#platformDesc").val(),
-                "platformDomain": $("#platformDomain").val()
             },
-            dataType: "json",
-            url: "/platformMgnt/savePlatformConfig",
-            success: function (json) {
-                if (json["status_Code"] === 200) {
-                    console.log("success");
-                } else {
-                    console.log("exception in save");
-                }
-                $('#platformConfig').modal("hide");
-                loadPlatformConfigList();
-            },
-            error: function (error) {
+            error:function (error) {
                 console.log(error);
             }
         })
