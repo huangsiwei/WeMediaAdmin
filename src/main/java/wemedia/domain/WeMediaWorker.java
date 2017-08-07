@@ -1,7 +1,10 @@
 package wemedia.domain;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by hsw11 on 2017/7/24.
@@ -16,6 +19,18 @@ public class WeMediaWorker {
     private String workerName;
     private String workerDesc;
     private boolean deleted;
+
+    public List<WeMediaWorkerHomePage> getHomePages() {
+        return homePages;
+    }
+
+    public void setHomePages(List<WeMediaWorkerHomePage> homePages) {
+        this.homePages = homePages;
+    }
+
+    @OneToMany
+    @Nullable
+    private List<WeMediaWorkerHomePage> homePages;
 
     public long getId() {
         return id;
