@@ -22,6 +22,10 @@ public class WeMediaWorkerHomePage {
     @Nullable
     private Platform platform;
 
+    public WeMediaWorkerHomePage() {
+
+    }
+
     public WeMediaWorkerHomePage(WeMediaWorker weMediaWorker, String homePage, Platform platform) {
         this.weMediaWorker = weMediaWorker;
         this.homePage = homePage;

@@ -28,7 +28,7 @@ public class WeMediaWorker {
         this.homePages = homePages;
     }
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @Nullable
     private List<WeMediaWorkerHomePage> homePages;
 

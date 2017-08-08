@@ -135,8 +135,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveConfigBtn" platform-id="-1"
-                        onclick="">保存
+                <button type="button" class="btn btn-primary" id="saveConfigBtn"
+                        onclick="saveWemediaWorkerHomePageConfig()">保存
                 </button>
             </div>
         </div>
@@ -146,6 +146,11 @@
 <script src="<@spring.url'/js/jquery-2.2.0.min.js'/>"></script>
 <script src="<@spring.url'/js/bootstrap.js'/>"></script>
 <script type="application/javascript">
+
+    $(function () {
+        loadWemediaWorkerHomePageTable()
+    });
+
     function showWemediaHomePageConfig() {
         $("#wemediaHomePageConfig").modal("show");
         loadWorkerIdSelectOption();
@@ -178,6 +183,22 @@
             },
             error:function (error) {
                 console.log(error);
+            }
+        })
+    }
+
+    function loadWemediaWorkerHomePageTable() {
+        $.ajax({
+            url:"/weMediaHomePageMgnt/loadWemediaWorkerHomePageTable",
+            data:{
+
+            },
+            dataType:"html",
+            success:function (html) {
+                $("#weMediaWorkerTable tbody").html(html)
+            },
+            error:function (error) {
+                console.log(error)
             }
         })
     }

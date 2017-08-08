@@ -52,14 +52,16 @@ public class WeMediaHomePageMgntController {
             List<WeMediaWorkerHomePage> weMediaWorkerHomePageList = new ArrayList<>();
             String[] urlList = homePageUrlList.split("\n");
             for (String homePageUrl : urlList) {
-                WeMediaWorkerHomePage weMediaWorkerHomePage = weMediaWorkerHomePageRepository.findByWeMediaWorkerAndHomePage(weMediaWorker, homePageUrl);
-                if (weMediaWorkerHomePage != null) {
-                    weMediaWorkerHomePage.setDeleted(false);
-                } else {
-                    weMediaWorkerHomePage = new WeMediaWorkerHomePage(weMediaWorker, homePageUrl);
+                if (!homePageUrl.equals("")) {
+                    WeMediaWorkerHomePage weMediaWorkerHomePage = weMediaWorkerHomePageRepository.findByWeMediaWorkerAndHomePage(weMediaWorker, homePageUrl);
+                    if (weMediaWorkerHomePage != null) {
+                        weMediaWorkerHomePage.setDeleted(false);
+                    } else {
+                        weMediaWorkerHomePage = new WeMediaWorkerHomePage(weMediaWorker, homePageUrl);
+                    }
+                    weMediaWorkerHomePageRepository.save(weMediaWorkerHomePage);
+                    weMediaWorkerHomePageList.add(weMediaWorkerHomePage);
                 }
-                weMediaWorkerHomePageRepository.save(weMediaWorkerHomePage);
-                weMediaWorkerHomePageList.add(weMediaWorkerHomePage);
             }
             weMediaWorker.setHomePages(weMediaWorkerHomePageList);
             weMediaWorker = weMediaWorkerRepository.save(weMediaWorker);
@@ -70,5 +72,13 @@ public class WeMediaHomePageMgntController {
             resultData.put("exception", e);
         }
         return JSON.toJSONString(resultData);
+    }
+
+    @RequestMapping("/weMediaHomePageMgnt/loadWemediaWorkerHomePageTable")
+    public ModelAndView loadWemediaWorkerHomePageTable() {
+        List<WeMediaWorker> weMediaWorkerList = weMediaWorkerRepository.findAllByDeleted(false);
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("weMediaWorkerList", weMediaWorkerList);
+        return new ModelAndView("weMediaHomePageMgnt/wemediaWorkerHomePageListContainer", model);
     }
 }
