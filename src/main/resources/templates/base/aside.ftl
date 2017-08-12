@@ -19,10 +19,15 @@
                 </ul>
             </li>
 
-
-            <li class="treeview">
+            <li class="active">
                 <a href="#">
-                    <i class="fa fa-edit"></i> <span>Forms</span>
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="active treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>报表展示</span>
                     <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>

@@ -60,7 +60,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div id="example2_wrapper" class="form-inline dt-bootstrap">
+                            <div class="form-inline dt-bootstrap">
                                 <div class="row">
                                     <div class="col-sm-6"></div>
                                     <div class="col-sm-6"></div>
@@ -71,19 +71,15 @@
                                                role="grid" aria-describedby="example2_info">
                                             <thead>
                                             <tr role="row">
-                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Rendering engine: activate to sort column ascending">
+                                                <th class="sorting" tabindex="0"  rowspan="1"
+                                                    colspan="1">
                                                     自媒体人
                                                 </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example2"
-                                                    rowspan="1" colspan="1"
-                                                    aria-label="Browser: activate to sort column descending"
-                                                    aria-sort="ascending">简介
+                                                <th class="sorting_asc" tabindex="0"
+                                                    rowspan="1" colspan="1">主页列表
                                                 </th>
-                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Platform(s): activate to sort column ascending">
+                                                <th class="sorting" tabindex="0"  rowspan="1"
+                                                    colspan="1">
                                                     操作
                                                 </th>
                                             </tr>
@@ -179,7 +175,13 @@
             },
             dataType:"json",
             success:function (json) {
-
+                if (json["status_Code"] === 200) {
+                    console.log("success");
+                } else {
+                    console.log("exception in save");
+                }
+                $('#wemediaHomePageConfig').modal("hide");
+                loadWemediaWorkerHomePageTable();
             },
             error:function (error) {
                 console.log(error);
@@ -195,7 +197,7 @@
             },
             dataType:"html",
             success:function (html) {
-                $("#weMediaWorkerTable tbody").html(html)
+                $("#weMediaWorkerTable tbody").html(html);
             },
             error:function (error) {
                 console.log(error)
