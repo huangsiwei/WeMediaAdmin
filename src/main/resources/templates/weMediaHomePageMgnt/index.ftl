@@ -100,6 +100,27 @@
     </div>
 </div>
 
+<div class="modal" id="wemediaHomePageEditConfig">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveConfigBtn"
+                        onclick="saveWeMediaWorkerHomePageConfig()">保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal" id="wemediaHomePageConfig">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -132,7 +153,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveConfigBtn"
-                        onclick="saveWemediaWorkerHomePageConfig()">保存
+                        onclick="saveWeMediaWorkerHomePageConfig()">保存
                 </button>
             </div>
         </div>
@@ -151,7 +172,23 @@
         $("#wemediaHomePageConfig").modal("show");
         loadWorkerIdSelectOption();
     }
-    
+
+    function showEditConfigModal(workerId) {
+        $.ajax({
+            url:"/weMediaHomePageMgnt/loadWeMediaWorkerEditConfigContainer",
+            data:{workerId:workerId},
+            dataType:"html",
+            success:function (html) {
+                $("#wemediaHomePageEditConfig").modal("show");
+                $("#wemediaHomePageEditConfig .modal-body").html(html)
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+
     function loadWorkerIdSelectOption() {
         $.ajax({
             url:"/weMediaHomePageMgnt/loadWorkerIdSelectOption",
@@ -166,9 +203,9 @@
         })
     }
     
-    function saveWemediaWorkerHomePageConfig() {
+    function saveWeMediaWorkerHomePageConfig() {
         $.ajax({
-            url:"/weMediaHomePageMgnt/saveWemediaWorkerHomePageConfig",
+            url:"/weMediaHomePageMgnt/saveWeMediaWorkerHomePageConfig",
             data:{
                 workerId:$("select[name=workerId]").val(),
                 homePageUrlList:$("#homePageUrlList").val()
@@ -204,6 +241,8 @@
             }
         })
     }
+
+
 </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     </#list>
     </td>
     <td>
-        <button class="btn btn-primary btn-sm" onclick="">
+        <button class="btn btn-primary btn-sm" onclick="showEditConfigModal(${item.id})">
             修改
         </button>
         <button class="btn btn-danger btn-sm">

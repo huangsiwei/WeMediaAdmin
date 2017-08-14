@@ -42,8 +42,21 @@ public class WeMediaHomePageMgntController {
 
     }
 
-    @RequestMapping("/weMediaHomePageMgnt/saveWemediaWorkerHomePageConfig")
-    public String saveWemediaWorkerHomePageConfig(@RequestParam("workerId") long workerId,
+    @RequestMapping("/weMediaHomePageMgnt/loadWeMediaWorkerEditConfigContainer")
+    public ModelAndView loadWeMediaWorkerEditConfigContainer(@RequestParam("workerId") long workerId) {
+        Map<String, Object> resultData = new HashMap<>();
+        WeMediaWorker weMediaWorker = weMediaWorkerRepository.findByIdAndDeleted(workerId, false);
+        List<WeMediaWorkerHomePage> weMediaWorkerHomePageList = weMediaWorkerHomePageRepository
+                .findAllByWeMediaWorkerAndDeleted(weMediaWorker,
+                        false);
+        resultData.put("weMediaWorker", weMediaWorker);
+        resultData.put("weMediaWorkerHomePageList", weMediaWorkerHomePageList);
+
+        return new ModelAndView("weMediaHomePageMgnt/weMediaWorkerEditConfigContainer", resultData);
+    }
+
+    @RequestMapping("/weMediaHomePageMgnt/saveWeMediaWorkerHomePageConfig")
+    public String saveWeMediaWorkerHomePageConfig(@RequestParam("workerId") long workerId,
                                                   @RequestParam("homePageUrlList") String homePageUrlList) {
         Map<String, Object> resultData = new HashMap<>();
         try {
