@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import wemedia.dao.WeMediaWorkerHomePageRepository;
 import wemedia.dao.WeMediaWorkerRepository;
@@ -56,8 +57,8 @@ public class WeMediaHomePageMgntController {
     }
 
     @RequestMapping("/weMediaHomePageMgnt/saveWeMediaWorkerHomePageConfig")
-    public String saveWeMediaWorkerHomePageConfig(@RequestParam("workerId") long workerId,
-                                                  @RequestParam("homePageUrlList") String homePageUrlList) {
+    public @ResponseBody String saveWeMediaWorkerHomePageConfig(@RequestParam("workerId") long workerId,
+                                           @RequestParam("homePageUrlList") String homePageUrlList) {
         Map<String, Object> resultData = new HashMap<>();
         try {
             WeMediaWorker weMediaWorker = weMediaWorkerRepository.findByIdAndDeleted(workerId, false);
